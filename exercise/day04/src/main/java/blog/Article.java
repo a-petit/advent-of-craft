@@ -14,14 +14,14 @@ public class Article {
         this.comments = new ArrayList<>();
     }
 
-    public void addComment(Comment comment) throws CommentAlreadyExistException {
+    public void add(Comment comment) throws CommentAlreadyExistException {
         if (comments.contains(comment))
             throw new CommentAlreadyExistException();
 
         comments.add(comment);
     }
 
-    public List<Comment> getComments() {
+    public List<Comment> comments() {
         return comments;
     }
 }

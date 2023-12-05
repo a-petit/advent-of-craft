@@ -12,9 +12,9 @@ class ArticleTests {
         var article = ArticleBuilder.any();
         var commentToAdd = CommentBuilder.any();
 
-        article.addComment(commentToAdd);
+        article.add(commentToAdd);
 
-        assertThat(article.getComments())
+        assertThat(article.comments())
             .hasSize(1)
             .anyMatch(comment -> comment == commentToAdd);
     }
@@ -24,11 +24,11 @@ class ArticleTests {
         var article = ArticleBuilder.any();
         var initialComment = CommentBuilder.from("author 1");
         var anotherComment = CommentBuilder.from("author 2");
-        article.addComment(initialComment);
+        article.add(initialComment);
 
-        article.addComment(anotherComment);
+        article.add(anotherComment);
 
-        assertThat(article.getComments())
+        assertThat(article.comments())
             .hasSize(2)
             .anyMatch(comment -> comment == initialComment)
             .anyMatch(comment -> comment == anotherComment);
@@ -38,10 +38,10 @@ class ArticleTests {
     void adding_a_same_comment_twice_fails() throws CommentAlreadyExistException {
         var article = ArticleBuilder.any();
         var sameComment = CommentBuilder.any();
-        article.addComment(sameComment);
+        article.add(sameComment);
 
         assertThatThrownBy(
-            () -> article.addComment(sameComment)
+            () -> article.add(sameComment)
         ).isInstanceOf(CommentAlreadyExistException.class);
     }
 }
