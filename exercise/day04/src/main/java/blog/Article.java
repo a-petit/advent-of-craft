@@ -1,6 +1,5 @@
 package blog;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,19 +14,11 @@ public class Article {
         this.comments = new ArrayList<>();
     }
 
-    private void addComment(
-            String text,
-            String author,
-            LocalDate creationDate) throws CommentAlreadyExistException {
-        var comment = new Comment(text, author, creationDate);
-
-        if (comments.contains(comment)) {
+    public void addComment(Comment comment) throws CommentAlreadyExistException {
+        if (comments.contains(comment))
             throw new CommentAlreadyExistException();
-        } else comments.add(comment);
-    }
 
-    public void addComment(String text, String author) throws CommentAlreadyExistException {
-        addComment(text, author, LocalDate.now());
+        comments.add(comment);
     }
 
     public List<Comment> getComments() {
