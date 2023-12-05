@@ -54,24 +54,25 @@ class PopulationTests {
     }
 
     private static StringBuilder formatPopulation() {
-        final var response = new StringBuilder();
+        return population
+            .parallelStream()
+            .collect(
+                StringBuilder::new,
+                (resp, person) -> {
+                    resp.append(format("%s %s", person.firstName(), person.lastName()));
 
-        for (var person : population) {
-            response.append(format("%s %s", person.firstName(), person.lastName()));
+                    if (!person.pets().isEmpty()) {
+                        resp.append(" who owns : ");
+                    }
 
-            if (!person.pets().isEmpty()) {
-                response.append(" who owns : ");
-            }
+                    for (var pet : person.pets()) {
+                        resp.append(pet.name()).append(" ");
+                    }
 
-            for (var pet : person.pets()) {
-                response.append(pet.name()).append(" ");
-            }
 
-            if (!population.getLast().equals(person)) {
-                response.append(lineSeparator());
-            }
-        }
-        return response;
+                },
+                (a, b) -> a.append(lineSeparator()).append(b)
+            );
     }
 
     @Test
