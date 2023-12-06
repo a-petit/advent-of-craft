@@ -6,6 +6,7 @@ import people.PetType;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static java.lang.String.format;
 import static java.lang.System.lineSeparator;
@@ -58,21 +59,23 @@ class PopulationTests {
             .parallelStream()
             .collect(
                 StringBuilder::new,
-                (resp, person) -> {
-                    resp.append(format("%s %s", person.firstName(), person.lastName()));
-
-                    if (!person.pets().isEmpty()) {
-                        resp.append(" who owns : ");
-                    }
-
-                    for (var pet : person.pets()) {
-                        resp.append(pet.name()).append(" ");
-                    }
-
-
-                },
+                (resp, person) -> resp.append(formatPerson(person)),
                 (a, b) -> a.append(lineSeparator()).append(b)
             );
+    }
+
+    private static StringBuilder formatPerson(Person person) {
+        StringBuilder formatted = new StringBuilder();
+        formatted.append(format("%s %s", person.firstName(), person.lastName()));
+        if (!person.pets().isEmpty()) {
+            formatted.append(" who owns : ");
+            formatted.append(person
+                    .pets()
+                    .stream()
+                    .map(pet -> pet.name() + " ")
+                    .collect(Collectors.joining()));
+        }
+        return formatted;
     }
 
     @Test
