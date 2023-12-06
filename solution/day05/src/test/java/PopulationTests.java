@@ -41,9 +41,7 @@ class PopulationTests {
 
     @Test
     void peopleWithTheirPets() {
-        final var response = formatPopulation();
-
-        assertThat(response)
+        assertThat(formatPopulation())
                 .hasToString("Peter Griffin who owns : Tabby " + lineSeparator() +
                         "Stewie Griffin who owns : Dolly Brian " + lineSeparator() +
                         "Joe Swanson who owns : Spike " + lineSeparator() +
@@ -54,28 +52,22 @@ class PopulationTests {
                         "Glenn Quagmire");
     }
 
-    private static StringBuilder formatPopulation() {
-        return population
-            .parallelStream()
-            .collect(
-                StringBuilder::new,
-                (resp, person) -> resp.append(formatPerson(person)),
-                (a, b) -> a.append(lineSeparator()).append(b)
-            );
+    private static String formatPopulation() {
+        return population.stream()
+                .map(PopulationTests::formatPerson)
+                .collect(Collectors.joining(lineSeparator()));
     }
 
-    private static StringBuilder formatPerson(Person person) {
-        StringBuilder formatted = new StringBuilder();
-        formatted.append(format("%s %s", person.firstName(), person.lastName()));
-        if (!person.pets().isEmpty()) {
-            formatted.append(" who owns : ");
-            formatted.append(person
-                    .pets()
-                    .stream()
-                    .map(pet -> pet.name() + " ")
-                    .collect(Collectors.joining()));
-        }
-        return formatted;
+    private static String formatPerson(Person person) {
+        return format("%s %s", person.firstName(), person.lastName()) +
+                (!person.pets().isEmpty() ? formatPets(person) : "");
+    }
+
+    private static String formatPets(Person person) {
+        return person.pets()
+                .stream()
+                .map(Pet::name)
+                .collect(Collectors.joining(" ", " who owns : ", " "));
     }
 
     @Test
