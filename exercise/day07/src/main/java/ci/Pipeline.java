@@ -11,66 +11,59 @@ public class Pipeline {
     private final Logger log;
 
     private boolean projectDeployed;
+    private boolean testFailed;
 
     public Pipeline(Config config, Emailer emailer, Logger log) {
         this.config = config;
         this.emailer = emailer;
         this.log = log;
-        projectDeployed = false;
     }
 
     public void run(Project project) {
-        boolean testsPassed;
-
-        testsPassed = runTests(project);
-
-        deploy(project, testsPassed);
-
-        summaryze(testsPassed);
+        runTests(project);
+        deploy(project);
+        summarize();
     }
 
-    private void summaryze(boolean testsPassed) {
-        if (config.sendEmailSummary()) {
-            log.info("Sending email");
-            if (testsPassed) {
-                if (projectDeployed) {
-                    emailer.send("Deployment completed successfully");
-                } else {
-                    emailer.send("Deployment failed");
-                }
-            } else {
-                emailer.send("Tests failed");
-            }
-        } else {
+    private void summarize() {
+        if (!config.sendEmailSummary()) {
             log.info("Email disabled");
+            return;
         }
+        log.info("Sending email");
+        if (testFailed) {
+            emailer.send("Tests failed");
+            return;
+        }
+        if (!projectDeployed) {
+            emailer.send("Deployment failed");
+            return;
+        }
+        emailer.send("Deployment completed successfully");
     }
 
-    private void deploy(Project project, boolean testsPassed) {
-        if (testsPassed) {
-            if ("success".equals(project.deploy())) {
-                log.info("Deployment successful");
-                projectDeployed = true;
-            } else {
-                log.error("Deployment failed");
-            }
-        }
-    }
+    private void deploy(Project project) {
+        if (testFailed)
+            return;
 
-    private boolean runTests(Project project) {
-        boolean testsPassed;
-        if (project.hasTests()) {
-            if ("success".equals(project.runTests())) {
-                log.info("Tests passed");
-                testsPassed = true;
-            } else {
-                log.error("Tests failed");
-                testsPassed = false;
-            }
+        if ("success".equals(project.deploy())) {
+            log.info("Deployment successful");
+            projectDeployed = true;
         } else {
-            log.info("No tests");
-            testsPassed = true;
+            log.error("Deployment failed");
         }
-        return testsPassed;
+    }
+
+    private void runTests(Project project) {
+        if (!project.hasTests()) {
+            log.info("No tests");
+            return;
+        }
+        if (!project.runTests().equals("success")) {
+            log.error("Tests failed");
+            testFailed = true;
+            return;
+        }
+        log.info("Tests passed");
     }
 }
