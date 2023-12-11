@@ -14,7 +14,7 @@
     <version>1.0-SNAPSHOT</version>
 
     <properties>
-        <vavr.version>0.9.0</vavr.version>
+        <vavr.version>0.10.4</vavr.version>
     </properties>
 
     <dependencies>
@@ -29,6 +29,11 @@
             <artifactId>vavr-test</artifactId>
             <version>${vavr.version}</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.github.mfoo</groupId>
+            <artifactId>libyear-maven-plugin</artifactId>
+            <version>1.0.0</version>
         </dependency>
     </dependencies>
 </project>
