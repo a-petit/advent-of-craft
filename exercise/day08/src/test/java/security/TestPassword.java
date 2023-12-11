@@ -11,8 +11,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class TestPassword {
 
-    private String A_VALID_PASSWORD = "aA1.5678";
-
     @Test
     void a_valid_case() {
         assertThat(Password.of("aA1.5678")).isEqualTo(true);

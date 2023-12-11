@@ -1,4 +1,4 @@
-package security;
+package functional;
 
 public class PasswordWithoutSpecialCharacterException extends Exception {
 }
