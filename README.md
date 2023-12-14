@@ -97,5 +97,19 @@ A solution proposal will be published here every day during the `Advent Of Craft
             <sub style="font-size:14px"><b>Yann Courtel</b></sub>
         </a>
     </td>
+    <td align="center" style="word-wrap: break-word; width: 150.0; height: 150.0">
+        <a href=https://github.com/lxnd-dune>
+            <img src=https://avatars.githubusercontent.com/u/99426165?v=4 width="100;"  style="border-radius:50%;align-items:center;justify-content:center;overflow:hidden;padding-top:10px" alt=lxnd-dune/>
+            <br />
+            <sub style="font-size:14px"><b>lxnd-dune</b></sub>
+        </a>
+    </td>
+    <td align="center" style="word-wrap: break-word; width: 150.0; height: 150.0">
+        <a href=https://github.com/a-petit>
+            <img src=https://avatars.githubusercontent.com/u/8679120?v=4 width="100;"  style="border-radius:50%;align-items:center;justify-content:center;overflow:hidden;padding-top:10px" alt=a-petit/>
+            <br />
+            <sub style="font-size:14px"><b>a-petit</b></sub>
+        </a>
+    </td>
 </tr>
 </table>
